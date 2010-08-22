@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import EMPTY_VALUES
+from django.core.mail import send_mail
+from django.conf import settings
 
 import callpass
 
@@ -30,14 +32,34 @@ class PasscodeRequest(models.Model):
     
     def approve(self):
         self.generate_passcode()
-        # TODO: send email
         self.status = 'approved'
         self.save()
+        send_mail(
+            'APRS-IS Passcode Approved!',
+            '''
+            %s,
+            
+            Your APRS-IS passcode for %s is %s.
+            ''' % (self.full_name, self.callsign, self.passcode),
+            settings.EMAIL_FROM,
+            [self.email],
+            fail_silently=False
+        )
     
     def deny(self):
-        # TODO: send email
         self.status = 'denied'
         self.save()
+        send_mail(
+            'APRS-IS Passcode Denied!',
+            '''
+            %s,
+            
+            Your APRS-IS passcode request for %s was denied.
+            ''' % (self.full_name, self.callsign),
+            settings.EMAIL_FROM,
+            [self.email],
+            fail_silently=False
+        )
     
     def qrz(self):
         return u'<a href="http://www.qrz.com/db/%s">%s</a>' % (self.callsign, self.callsign)
