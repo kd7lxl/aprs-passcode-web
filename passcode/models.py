@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import EMPTY_VALUES
 
+import callpass
+
+
 class PasscodeRequest(models.Model):
     full_name = models.CharField(max_length=100)
     callsign = models.CharField(max_length=10, unique=True)
@@ -22,12 +25,12 @@ class PasscodeRequest(models.Model):
         super(PasscodeRequest, self).save()
     
     def generate_passcode(self):
-        # generate passcode
-        self.passcode = ''
+        self.passcode = callpass.do_hash(self.callsign)
         return self.passcode
     
     def approve(self):
-        # TODO: generate passcode, send email
+        self.generate_passcode()
+        # TODO: send email
         self.status = 'approved'
         self.save()
     
@@ -36,15 +39,17 @@ class PasscodeRequest(models.Model):
         self.status = 'denied'
         self.save()
     
+    def qrz(self):
+        return u'<a href="http://www.qrz.com/db/%s">%s</a>' % (self.callsign, self.callsign)
+    qrz.allow_tags = True
+    
     def approve_link(self):
         return u'<a href="/admin/passcode/passcoderequest/%s/approve">Approve</a>' % (self.id)
     approve_link.allow_tags = True
-    approve_link.verbose_name = 'Approve'
     
     def deny_link(self):
         return u'<a href="/admin/passcode/passcoderequest/%s/deny">Deny</a>' % (self.id)
     deny_link.allow_tags = True
-    deny_link.verbose_name = 'Deny'
     
     class Meta:
         ordering = ['-submitted']
