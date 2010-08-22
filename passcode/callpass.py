@@ -7,7 +7,6 @@ KKEY = 0x73e2
 
 def do_hash(callsign):
     rootCall = ''
-    ptr = rootCall
     
     for c in callsign:
         if c == '-':
