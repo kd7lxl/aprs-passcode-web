@@ -1,0 +1,8 @@
+<h1>APRS-IS Passcode Request</h1>
+
+<form action="" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <label>&nbsp;</label>
+  <input type="submit" name="submit" value="Submit" />
+</form>
