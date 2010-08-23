@@ -9,7 +9,7 @@ def passcode_request(request):
         form = PasscodeRequestForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/complete')
+            return HttpResponseRedirect('complete')
     else:
         form = PasscodeRequestForm()
     

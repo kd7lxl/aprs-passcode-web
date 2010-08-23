@@ -66,11 +66,11 @@ class PasscodeRequest(models.Model):
     qrz.allow_tags = True
     
     def approve_link(self):
-        return u'<a href="/admin/passcode/passcoderequest/%s/approve">Approve</a>' % (self.id)
+        return u'<a href="%s/approve">Approve</a>' % (self.id)
     approve_link.allow_tags = True
     
     def deny_link(self):
-        return u'<a href="/admin/passcode/passcoderequest/%s/deny">Deny</a>' % (self.id)
+        return u'<a href="%s/deny">Deny</a>' % (self.id)
     deny_link.allow_tags = True
     
     class Meta:
