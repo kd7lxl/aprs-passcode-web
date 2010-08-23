@@ -49,10 +49,10 @@ class PasscodeRequest(models.Model):
         send_mail(
             'APRS-IS Passcode Approved!',
             '''
-            %s,
-            
-            Your APRS-IS passcode for %s is %s.
-            ''' % (self.full_name, self.callsign, self.passcode),
+%s,
+
+Your APRS-IS passcode for %s is %s.
+''' % (self.full_name, self.callsign, self.passcode),
             settings.EMAIL_FROM,
             [self.email],
             fail_silently=False
@@ -64,10 +64,10 @@ class PasscodeRequest(models.Model):
         send_mail(
             'APRS-IS Passcode Denied!',
             '''
-            %s,
-            
-            Your APRS-IS passcode request for %s was denied.
-            ''' % (self.full_name, self.callsign),
+%s,
+
+Your APRS-IS passcode request for %s was denied.
+''' % (self.full_name, self.callsign),
             settings.EMAIL_FROM,
             [self.email],
             fail_silently=False
