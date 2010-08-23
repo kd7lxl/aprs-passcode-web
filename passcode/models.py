@@ -81,14 +81,10 @@ Your APRS-IS passcode request for %s was denied.
         return u'<a href="http://f6fvy.free.fr/qthLocator/fullScreen.php?locator=%s">%s</a>' % (self.locator, self.locator)
     qth.allow_tags = True
     
-    def approve_link(self):
-        return u'<a href="%s/approve">Approve</a>' % (self.id)
-    approve_link.allow_tags = True
-    
-    def deny_link(self):
-        return u'<a href="%s/deny">Deny</a>' % (self.id)
-    deny_link.allow_tags = True
-    
+    def decision(self):
+        return u'<a href="%s/approve">Approve</a>&nbsp;/&nbsp;<a href="%s/deny">Deny</a>' % (self.id, self.id)
+    decision.allow_tags = True
+
     class Meta:
         ordering = ['-submitted']
     
