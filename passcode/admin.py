@@ -13,6 +13,7 @@ class PasscodeRequestAdmin(admin.ModelAdmin):
     list_display  = (
         'full_name',
         'qrz',
+        'qth',
         'email',
         'submitted',
         'approve_link',

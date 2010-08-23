@@ -9,6 +9,7 @@ import callpass
 class PasscodeRequest(models.Model):
     full_name = models.CharField(max_length=100)
     callsign = models.CharField(max_length=10, unique=True)
+    locator = models.CharField(max_length=8)
     email = models.EmailField()
     comment = models.TextField(blank=True)
     submitted = models.DateTimeField(auto_now_add=True)
@@ -64,6 +65,10 @@ class PasscodeRequest(models.Model):
     def qrz(self):
         return u'<a href="http://www.qrz.com/db/%s">%s</a>' % (self.callsign, self.callsign)
     qrz.allow_tags = True
+    
+    def qth(self):
+        return u'<a href="http://f6fvy.free.fr/qthLocator/fullScreen.php?locator=%s">%s</a>' % (self.locator, self.locator)
+    qth.allow_tags = True
     
     def approve_link(self):
         return u'<a href="%s/approve">Approve</a>' % (self.id)
