@@ -25,6 +25,17 @@ class PasscodeRequest(models.Model):
     def save(self):
         if self.status in EMPTY_VALUES:
             self.status = 'pending'
+            send_mail(
+                'APRS-IS Passcode Request: %s' % self.callsign,
+                '''
+%s (%s, %s) requested a passcode for %s:
+%s
+''' % (self.full_name, self.email, self.locator, self.callsign,
+       self.comment),
+                settings.EMAIL_FROM,
+                settings.EMAIL_NOTIFY,
+                fail_silently=False
+            )
         super(PasscodeRequest, self).save()
     
     def generate_passcode(self):

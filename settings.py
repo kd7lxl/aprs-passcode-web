@@ -100,3 +100,8 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_FROM = ''
+
+# add your email address(es) to this list to get notified of new requets
+# e.g.: EMAIL_NOTIFY = ['bob@example.com', 'maria@example.com']
+EMAIL_NOTIFY = []
+
