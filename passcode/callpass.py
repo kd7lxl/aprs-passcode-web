@@ -6,18 +6,13 @@ Port of Xastir's callpass.c to Python.
 KKEY = 0x73e2
 
 def do_hash(callsign):
-    rootCall = ''
-    
-    for c in callsign:
-        if c == '-':
-            break
-        rootCall += c.upper()
+    rootCall = callsign.split("-")[0].upper() + '\0'
     
     hash = KKEY
     i = 0
     length = len(rootCall)
     
-    while (i < length):
+    while (i+1 < length):
         hash ^= ord(rootCall[i])<<8
         hash ^= ord(rootCall[i+1])
         i += 2
