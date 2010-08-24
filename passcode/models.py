@@ -74,11 +74,11 @@ Your APRS-IS passcode request for %s was denied.
         )
     
     def qrz(self):
-        return u'<a href="http://www.qrz.com/db/%s">%s</a>' % (self.callsign, self.callsign)
+        return u'<a href="http://www.qrz.com/db/%s" target="_blank">%s</a>' % (self.callsign, self.callsign)
     qrz.allow_tags = True
     
     def qth(self):
-        return u'<a href="http://f6fvy.free.fr/qthLocator/fullScreen.php?locator=%s">%s</a>' % (self.locator, self.locator)
+        return u'<a href="http://f6fvy.free.fr/qthLocator/fullScreen.php?locator=%s" target="_blank">%s</a>' % (self.locator, self.locator)
     qth.allow_tags = True
     
     def decision(self):
