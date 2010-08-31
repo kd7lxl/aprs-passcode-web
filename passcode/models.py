@@ -9,7 +9,7 @@ import callpass
 class PasscodeRequest(models.Model):
     full_name = models.CharField(max_length=100)
     callsign = models.CharField(max_length=10, unique=True)
-    locator = models.CharField(max_length=8)
+    locator = models.CharField("IARU locator", max_length=8)
     email = models.EmailField()
     comment = models.TextField(blank=True)
     submitted = models.DateTimeField(auto_now_add=True)
