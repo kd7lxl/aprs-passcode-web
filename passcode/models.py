@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import EMPTY_VALUES
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 
 import callpass
@@ -25,7 +25,7 @@ class PasscodeRequest(models.Model):
     def save(self):
         if self.status in EMPTY_VALUES:
             self.status = 'pending'
-            send_mail(
+            EmailMessage(
                 'APRS-IS Passcode Request: %s' % self.callsign,
                 '''
 %s (%s, %s) requested a passcode for %s:
@@ -34,8 +34,9 @@ class PasscodeRequest(models.Model):
        self.comment),
                 settings.EMAIL_FROM,
                 settings.EMAIL_NOTIFY,
-                fail_silently=False
-            )
+		[], # BCC
+		headers = {'Reply-To': self.email}
+            ).send(fail_silently=True)
         super(PasscodeRequest, self).save()
     
     def generate_passcode(self):
