@@ -3,9 +3,7 @@ from aprspasscode.passcode.models import *
 
 class PasscodeRequestAdmin(admin.ModelAdmin):
     readonly_fields = (
-        'comment',
         'submitted',
-        'status',
         'passcode',
         'last_action',
         'action_by',
