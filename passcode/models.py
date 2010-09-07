@@ -1,15 +1,18 @@
 from django.db import models
-from django.core.validators import EMPTY_VALUES
+from django.core.validators import EMPTY_VALUES, RegexValidator
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
+import re
 
 import callpass
 
+LOCATOR_REGEX = r'^[a-z]{2}[0-9]{2}([a-z]{2})?$'
 
 class PasscodeRequest(models.Model):
     full_name = models.CharField(max_length=100)
     callsign = models.CharField(max_length=10, unique=True)
-    locator = models.CharField("IARU locator", max_length=8)
+    loc_validator = RegexValidator(re.compile(LOCATOR_REGEX, re.I), "You need to supply a valid QTH locator!")
+    locator = models.CharField("IARU locator", max_length=8, validators=[loc_validator])
     email = models.EmailField()
     comment = models.TextField(blank=True)
     submitted = models.DateTimeField(auto_now_add=True)
