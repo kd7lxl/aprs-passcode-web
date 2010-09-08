@@ -28,7 +28,7 @@ class PasscodeRequest(models.Model):
     def save(self):
         if self.status in EMPTY_VALUES:
             self.status = 'pending'
-            self.callsign = self.callsign.upper()
+            self.callsign = self.callsign.upper().strip()
             EmailMessage(
                 'APRS-IS Passcode Request: %s' % self.callsign,
                 '''
