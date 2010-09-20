@@ -29,6 +29,13 @@ class PasscodeRequest(models.Model):
         if self.status in EMPTY_VALUES:
             self.status = 'pending'
             self.callsign = self.callsign.upper().strip()
+	    new_req = True
+	else:
+	    new_req = False
+
+        super(PasscodeRequest, self).save()
+
+	if new_req:
             EmailMessage(
                 'APRS-IS Passcode Request: %s' % self.callsign,
                 '''
@@ -41,7 +48,6 @@ class PasscodeRequest(models.Model):
 		[], # BCC
 		headers = {'Reply-To': self.email}
             ).send(fail_silently=True)
-        super(PasscodeRequest, self).save()
     
     def generate_passcode(self):
         self.passcode = callpass.do_hash(self.callsign)
