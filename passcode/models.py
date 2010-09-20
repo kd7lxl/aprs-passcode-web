@@ -8,9 +8,13 @@ import callpass
 
 LOCATOR_REGEX = r'^[a-z]{2}[0-9]{2}([a-z]{2})?$'
 
+class UpperCaseCharField(models.CharField):
+    def to_python(self, value):
+        return models.CharField.to_python(self, value.upper().strip())
+
 class PasscodeRequest(models.Model):
     full_name = models.CharField(max_length=100)
-    callsign = models.CharField(max_length=10, unique=True)
+    callsign = UpperCaseCharField(max_length=10, unique=True)
     loc_validator = RegexValidator(re.compile(LOCATOR_REGEX, re.I), "You need to supply a valid QTH locator!")
     locator = models.CharField("Maidenhead locator", max_length=8, validators=[loc_validator])
     email = models.EmailField()
@@ -28,7 +32,6 @@ class PasscodeRequest(models.Model):
     def save(self):
         if self.status in EMPTY_VALUES:
             self.status = 'pending'
-            self.callsign = self.callsign.upper().strip()
 	    new_req = True
 	else:
 	    new_req = False
