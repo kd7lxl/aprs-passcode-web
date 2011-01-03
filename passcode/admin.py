@@ -22,6 +22,17 @@ class PasscodeRequestAdmin(admin.ModelAdmin):
     )
     list_filter = ('status',)
     search_fields = ['full_name', 'callsign', 'email',]
+    actions = ['approve', 'deny']
+    
+    def approve(self, request, queryset):
+        for passcode_request in queryset:
+            passcode_request.approve()
+    approve.short_description = "Approve all selected requests."
+    
+    def deny(self, request, queryset):
+        for passcode_request in queryset:
+            passcode_request.deny()
+    deny.short_description = "Deny all selected requests."
     
     def save_model(self, request, obj, form, change):
         obj.action_by = request.user
