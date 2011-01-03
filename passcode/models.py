@@ -36,21 +36,27 @@ class PasscodeRequest(models.Model):
     	else:
     	    new_req = False
 
-            super(PasscodeRequest, self).save()
+        super(PasscodeRequest, self).save()
 
     	if new_req:
-                EmailMessage(
-                    'APRS-IS Passcode Request: %s' % self.callsign,
-                    '''
-    %s (%s, %s) requested a passcode for %s:
-    %s
-    ''' % (self.full_name, self.email, self.locator, self.callsign,
-           self.comment),
-                    settings.EMAIL_FROM,
-                    settings.EMAIL_NOTIFY,
-    		[], # BCC
-    		headers = {'Reply-To': self.email}
-                ).send(fail_silently=True)
+            from textwrap import dedent
+            EmailMessage(
+                'APRS-IS Passcode Request: %s' % self.callsign,
+                dedent('''\
+                %s (%s, %s) requested a passcode for %s:
+                %s
+                ''' % (
+                    self.full_name,
+                    self.email,
+                    self.locator,
+                    self.callsign,
+                    self.comment,
+                )),
+                settings.EMAIL_FROM,
+                settings.EMAIL_NOTIFY,
+                [], # BCC
+                headers={'Reply-To': self.email}
+            ).send(fail_silently=True)
     
     def generate_passcode(self):
         self.passcode = callpass.do_hash(self.callsign)
