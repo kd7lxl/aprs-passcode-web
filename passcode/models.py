@@ -87,6 +87,12 @@ Your APRS-IS passcode request for %s was denied.
             fail_silently=False
         )
     
+    def resend_mail(self):
+        if self.status == 'approved':
+            self.approve()
+        elif self.status == 'denied':
+            self.deny()
+    
     def qrz(self):
         return u'<a href="http://www.qrz.com/db/%s" target="_blank">%s</a>' % (self.callsign, self.callsign)
     qrz.allow_tags = True
